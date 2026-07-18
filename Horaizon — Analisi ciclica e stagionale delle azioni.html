@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/marzo/Downloads/horaizon-waitlist.html#waitlist -->
+<html lang="it"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horaizon — Analisi ciclica e stagionale delle azioni</title>
+<meta name="description" content="Horaizon: individua in che fase del ciclo si trova un titolo, con validazione in-sample/out-of-sample e metriche istituzionali. Entra nella lista d&#39;attesa.">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./Horaizon — Analisi ciclica e stagionale delle azioni_files/css2" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0E13; --ink-2:#111823; --ink-3:#18212E; --hair:#1F2B3A;
+    --bone:#EAF1F6; --bone-dim:#B6C3CE; --taupe:#7B8A99;
+    --cyan:#33D6E6; --cyan-dim:#1C8B98; --magenta:#E664A0;
+    --maxw:1080px; --pad:clamp(1.25rem,5vw,2.5rem);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--bone-dim);font-family:'Instrument Sans',system-ui,sans-serif;font-size:clamp(1rem,1.05vw,1.1rem);line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--cyan);color:var(--ink)}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;color:var(--bone);font-weight:420;line-height:1.07;letter-spacing:-0.015em}
+  em{font-style:italic;color:var(--cyan)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);display:inline-block;margin-bottom:1.4rem}
+
+  header.bar{position:sticky;top:0;z-index:50;background:rgba(10,14,19,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
+  .bar-inner{max-width:var(--maxw);margin:0 auto;padding:0.9rem var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .logo{font-family:'JetBrains Mono',monospace;font-size:0.95rem;letter-spacing:0.28em;color:var(--bone);text-transform:uppercase;font-weight:500}
+  .logo b{color:var(--cyan);font-weight:500}
+  .bar-cta{font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--cyan-dim);color:var(--bone);padding:0.55rem 1.05rem;border-radius:2px;transition:.25s;white-space:nowrap}
+  .bar-cta:hover{background:var(--cyan);color:var(--ink);border-color:var(--cyan)}
+
+  .hero{position:relative;padding:clamp(4rem,10vw,7.5rem) 0 clamp(2.5rem,6vw,4rem);overflow:hidden}
+  .hero-wave{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.32}
+  .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(130% 100% at 20% 40%,rgba(10,14,19,.92) 0%,rgba(10,14,19,.65) 42%,rgba(10,14,19,.15) 82%,rgba(10,14,19,0) 100%)}
+  .hero .wrap{position:relative;z-index:2}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.8rem);max-width:16ch;margin-bottom:1.6rem}
+  .hero .lede{font-size:clamp(1.14rem,1.7vw,1.4rem);color:var(--bone);max-width:52ch;margin-bottom:2.4rem;line-height:1.5}
+  .hero .lede strong{color:var(--cyan);font-weight:600}
+  .badge{display:inline-flex;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.08em;color:var(--bone-dim);border:1px solid var(--hair);border-radius:20px;padding:.4rem .9rem;margin-bottom:2rem}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(51,214,230,.5)}70%{box-shadow:0 0 0 8px rgba(51,214,230,0)}100%{box-shadow:0 0 0 0 rgba(51,214,230,0)}}
+
+  .btn{display:inline-flex;align-items:center;gap:0.7rem;background:var(--cyan);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:500;padding:1rem 1.7rem;border-radius:2px;border:1px solid var(--cyan);transition:transform .2s ease,background .25s,box-shadow .25s;cursor:pointer}
+  .btn:hover{background:#5CE2F0;transform:translateY(-2px);box-shadow:0 12px 30px -12px rgba(51,214,230,.5)}
+  .btn svg{width:15px;height:15px}
+
+  section.blk{padding:clamp(3rem,7vw,5.5rem) 0;border-top:1px solid var(--hair)}
+  .blk h2{font-size:clamp(1.8rem,3.4vw,2.8rem);margin-bottom:1.4rem;max-width:22ch}
+  .lead-p{font-size:clamp(1.05rem,1.3vw,1.2rem);color:var(--bone-dim)}
+  .measure{max-width:62ch}
+  .div-wave{display:block;width:100%;height:24px;opacity:.4;color:var(--cyan)}
+
+  /* metrics preview panel (echo dell'app) */
+  .preview{margin-top:3rem;border:1px solid var(--hair);border-radius:6px;background:linear-gradient(160deg,var(--ink-2),var(--ink));overflow:hidden}
+  .preview .pv-top{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.3rem;border-bottom:1px solid var(--hair)}
+  .preview .pv-top .t{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.1em;color:var(--cyan);text-transform:uppercase}
+  .preview .pv-top .w{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--taupe)}
+  .pv-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair)}
+  .pv-metrics .m{background:var(--ink-2);padding:1.2rem 1.1rem}
+  .pv-metrics .m .mv{font-family:'Fraunces',serif;color:var(--bone);font-size:1.5rem;line-height:1}
+  .pv-metrics .m .mv.pos{color:var(--cyan)}
+  .pv-metrics .m .mk{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe);margin-top:.4rem}
+  .pv-chart{padding:1.4rem;border-top:1px solid var(--hair)}
+  .pv-chart svg{width:100%;height:120px;display:block}
+  .pv-caption{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--taupe);letter-spacing:.05em;padding:0 1.4rem 1.2rem}
+
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem}
+  .feat .f{border:1px solid var(--hair);border-radius:4px;background:var(--ink-2);padding:1.7rem 1.5rem;transition:border-color .3s,transform .3s}
+  .feat .f:hover{border-color:var(--cyan-dim);transform:translateY(-3px)}
+  .feat .f svg{width:30px;height:30px;color:var(--cyan);margin-bottom:1rem}
+  .feat .f h3{font-size:1.2rem;font-weight:420;margin-bottom:.5rem}
+  .feat .f p{font-size:.93rem;color:var(--taupe);line-height:1.5}
+
+  .fit{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.5rem}
+  .fit .p{border:1px solid var(--hair);border-radius:4px;padding:1.6rem 1.4rem;background:var(--ink-2)}
+  .fit .p .n{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:.7rem;letter-spacing:.1em;margin-bottom:.7rem}
+  .fit .p h4{font-family:'Fraunces',serif;color:var(--bone);font-weight:420;font-size:1.15rem;margin-bottom:.4rem}
+  .fit .p p{font-size:.92rem;color:var(--taupe)}
+
+  /* form */
+  .apply{background:var(--ink-2);border-top:1px solid var(--hair)}
+  .apply-intro{max-width:58ch;margin-bottom:2.6rem}
+  form{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 1.7rem;max-width:760px}
+  .field{display:flex;flex-direction:column;gap:0.5rem}
+  .field.full{grid-column:1/-1}
+  label{font-family:'JetBrains Mono',monospace;font-size:0.74rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--bone-dim)}
+  label .req{color:var(--cyan)}
+  input,select,textarea{background:var(--ink);border:1px solid var(--hair);border-radius:2px;color:var(--bone);font-family:'Instrument Sans',sans-serif;font-size:1rem;padding:0.8rem 0.95rem;width:100%;transition:border-color .2s,box-shadow .2s}
+  textarea{resize:vertical;min-height:80px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(51,214,230,.15)}
+  .radios{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin-top:.2rem}
+  .radios label{display:flex;align-items:center;gap:0.55rem;text-transform:none;letter-spacing:0;font-family:'Instrument Sans',sans-serif;font-size:0.97rem;color:var(--bone-dim);cursor:pointer}
+  .radios input{width:auto;accent-color:var(--cyan)}
+  .consent{grid-column:1/-1;display:flex;gap:0.7rem;align-items:flex-start;font-size:0.86rem;color:var(--taupe);background:var(--ink);border:1px solid var(--hair);border-radius:3px;padding:.9rem 1.05rem}
+  .consent input{width:auto;margin-top:0.2rem;accent-color:var(--cyan);flex:0 0 auto}
+  .consent label{font-family:'Instrument Sans',sans-serif;text-transform:none;letter-spacing:0;color:var(--bone-dim);font-size:.9rem;line-height:1.5}
+  .submit-row{grid-column:1/-1;margin-top:0.3rem}
+  button[type=submit]{border:none}
+  .form-note{grid-column:1/-1;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--taupe)}
+  .form-done{display:none;max-width:58ch;padding:2.4rem 0}
+  .form-done.show{display:block;animation:fade .5s ease}
+  .form-done h3{font-size:1.8rem;margin-bottom:1rem}
+  .form-done p{color:var(--bone-dim)}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  footer{border-top:1px solid var(--hair);padding:2.6rem 0}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.2rem;align-items:center}
+  .foot p, .foot a{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.06em;color:var(--taupe)}
+  .foot a:hover{color:var(--bone)}
+  .foot-legal{margin-top:1.6rem;font-size:.74rem;color:var(--taupe);line-height:1.6;max-width:80ch}
+
+  .rev{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .rev.in{opacity:1;transform:none}
+  @media(max-width:820px){.pv-metrics{grid-template-columns:repeat(2,1fr)}.feat,.fit{grid-template-columns:1fr}form{grid-template-columns:1fr}.bar-cta{display:none}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}.rev{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="logo">HOR<b>AI</b>ZON</div>
+    <a href="file:///C:/Users/marzo/Downloads/horaizon-waitlist.html#waitlist" class="bar-cta">Lista d'attesa</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="hero-wave" id="heroWave" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
+    <path id="wavePath" fill="none" stroke="var(--cyan)" stroke-width="1.2" opacity="0.9" d="M0,300 L0.0,300.0 L8.0,309.0 L16.0,317.9 L24.0,326.5 L32.0,334.7 L40.0,342.3 L48.0,349.3 L56.0,355.5 L64.0,360.8 L72.0,365.1 L80.0,368.5 L88.0,370.7 L96.0,371.9 L104.0,371.9 L112.0,370.7 L120.0,368.5 L128.0,365.1 L136.0,360.8 L144.0,355.5 L152.0,349.3 L160.0,342.3 L168.0,334.7 L176.0,326.5 L184.0,317.9 L192.0,309.0 L200.0,300.0 L208.0,291.0 L216.0,282.1 L224.0,273.5 L232.0,265.3 L240.0,257.7 L248.0,250.7 L256.0,244.5 L264.0,239.2 L272.0,234.9 L280.0,231.5 L288.0,229.3 L296.0,228.1 L304.0,228.1 L312.0,229.3 L320.0,231.5 L328.0,234.9 L336.0,239.2 L344.0,244.5 L352.0,250.7 L360.0,257.7 L368.0,265.3 L376.0,273.5 L384.0,282.1 L392.0,291.0 L400.0,300.0 L408.0,309.0 L416.0,317.9 L424.0,326.5 L432.0,334.7 L440.0,342.3 L448.0,349.3 L456.0,355.5 L464.0,360.8 L472.0,365.1 L480.0,368.5 L488.0,370.7 L496.0,371.9 L504.0,371.9 L512.0,370.7 L520.0,368.5 L528.0,365.1 L536.0,360.8 L544.0,355.5 L552.0,349.3 L560.0,342.3 L568.0,334.7 L576.0,326.5 L584.0,317.9 L592.0,309.0 L600.0,300.0 L608.0,291.0 L616.0,282.1 L624.0,273.5 L632.0,265.3 L640.0,257.7 L648.0,250.7 L656.0,244.5 L664.0,239.2 L672.0,234.9 L680.0,231.5 L688.0,229.3 L696.0,228.1 L704.0,228.1 L712.0,229.3 L720.0,231.5 L728.0,234.9 L736.0,239.2 L744.0,244.5 L752.0,250.7 L760.0,257.7 L768.0,265.3 L776.0,273.5 L784.0,282.1 L792.0,291.0 L800.0,300.0 L808.0,309.0 L816.0,317.9 L824.0,326.5 L832.0,334.7 L840.0,342.3 L848.0,349.3 L856.0,355.5 L864.0,360.8 L872.0,365.1 L880.0,368.5 L888.0,370.7 L896.0,371.9 L904.0,371.9 L912.0,370.7 L920.0,368.5 L928.0,365.1 L936.0,360.8 L944.0,355.5 L952.0,349.3 L960.0,342.3 L968.0,334.7 L976.0,326.5 L984.0,317.9 L992.0,309.0 L1000.0,300.0 L1008.0,291.0 L1016.0,282.1 L1024.0,273.5 L1032.0,265.3 L1040.0,257.7 L1048.0,250.7 L1056.0,244.5 L1064.0,239.2 L1072.0,234.9 L1080.0,231.5 L1088.0,229.3 L1096.0,228.1 L1104.0,228.1 L1112.0,229.3 L1120.0,231.5 L1128.0,234.9 L1136.0,239.2 L1144.0,244.5 L1152.0,250.7 L1160.0,257.7 L1168.0,265.3 L1176.0,273.5 L1184.0,282.1 L1192.0,291.0 L1200.0,300.0" style="stroke-dasharray: 1521.05; stroke-dashoffset: 0; transition: stroke-dashoffset 2.6s cubic-bezier(0.16, 1, 0.3, 1);"></path>
+    <path id="wavePath2" fill="none" stroke="var(--cyan-dim)" stroke-width="0.8" opacity="0.5" d="M0,300 L0.0,399.8 L8.0,403.7 L16.0,406.9 L24.0,409.3 L32.0,411.0 L40.0,411.8 L48.0,411.9 L56.0,411.3 L64.0,409.8 L72.0,407.5 L80.0,404.5 L88.0,400.8 L96.0,396.4 L104.0,391.3 L112.0,385.5 L120.0,379.2 L128.0,372.3 L136.0,364.8 L144.0,357.0 L152.0,348.7 L160.0,340.1 L168.0,331.2 L176.0,322.1 L184.0,312.8 L192.0,303.5 L200.0,294.1 L208.0,284.8 L216.0,275.5 L224.0,266.5 L232.0,257.6 L240.0,249.1 L248.0,240.9 L256.0,233.2 L264.0,225.9 L272.0,219.1 L280.0,212.9 L288.0,207.3 L296.0,202.4 L304.0,198.1 L312.0,194.6 L320.0,191.8 L328.0,189.8 L336.0,188.5 L344.0,188.0 L352.0,188.3 L360.0,189.4 L368.0,191.2 L376.0,193.9 L384.0,197.2 L392.0,201.3 L400.0,206.1 L408.0,211.5 L416.0,217.6 L424.0,224.2 L432.0,231.4 L440.0,239.0 L448.0,247.1 L456.0,255.6 L464.0,264.3 L472.0,273.3 L480.0,282.5 L488.0,291.8 L496.0,301.2 L504.0,310.6 L512.0,319.9 L520.0,329.0 L528.0,338.0 L536.0,346.7 L544.0,355.0 L552.0,363.0 L560.0,370.5 L568.0,377.6 L576.0,384.0 L584.0,389.9 L592.0,395.2 L600.0,399.8 L608.0,403.7 L616.0,406.9 L624.0,409.3 L632.0,411.0 L640.0,411.8 L648.0,411.9 L656.0,411.3 L664.0,409.8 L672.0,407.5 L680.0,404.5 L688.0,400.8 L696.0,396.4 L704.0,391.3 L712.0,385.5 L720.0,379.2 L728.0,372.3 L736.0,364.8 L744.0,357.0 L752.0,348.7 L760.0,340.1 L768.0,331.2 L776.0,322.1 L784.0,312.8 L792.0,303.5 L800.0,294.1 L808.0,284.8 L816.0,275.5 L824.0,266.5 L832.0,257.6 L840.0,249.1 L848.0,240.9 L856.0,233.2 L864.0,225.9 L872.0,219.1 L880.0,212.9 L888.0,207.3 L896.0,202.4 L904.0,198.1 L912.0,194.6 L920.0,191.8 L928.0,189.8 L936.0,188.5 L944.0,188.0 L952.0,188.3 L960.0,189.4 L968.0,191.2 L976.0,193.9 L984.0,197.2 L992.0,201.3 L1000.0,206.1 L1008.0,211.5 L1016.0,217.6 L1024.0,224.2 L1032.0,231.4 L1040.0,239.0 L1048.0,247.1 L1056.0,255.6 L1064.0,264.3 L1072.0,273.3 L1080.0,282.5 L1088.0,291.8 L1096.0,301.2 L1104.0,310.6 L1112.0,319.9 L1120.0,329.0 L1128.0,338.0 L1136.0,346.7 L1144.0,355.0 L1152.0,363.0 L1160.0,370.5 L1168.0,377.6 L1176.0,384.0 L1184.0,389.9 L1192.0,395.2 L1200.0,399.8" style="stroke-dasharray: 1641.77; stroke-dashoffset: 0; transition: stroke-dashoffset 2.6s cubic-bezier(0.16, 1, 0.3, 1);"></path>
+  </svg>
+  <div class="wrap">
+    <div class="badge rev in"><span class="dot"></span> In sviluppo · Accesso su lista d'attesa</div>
+    <h1 class="rev in">Sai dove si trova un titolo nel suo <em>ciclo</em>?</h1>
+    <p class="lede rev in">Horaizon individua in modo <strong>sistematico e quantitativo</strong> la fase stagionale e ciclica di un'azione — con validazione in-sample / out-of-sample e metriche da analisi istituzionale. Non più a occhio: con i dati.</p>
+    <a href="file:///C:/Users/marzo/Downloads/horaizon-waitlist.html#waitlist" class="btn rev in">Entra in lista d'attesa
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"></path></svg>
+    </a>
+
+    <!-- preview panel -->
+    <div class="preview rev in">
+      <div class="pv-top"><span class="t">Analyze · Curva equity aggregata</span><span class="w">10 finestre stagionali · IS / OOS</span></div>
+      <div class="pv-metrics">
+        <div class="m"><div class="mv pos">88%</div><div class="mk">Win rate (OOS)</div></div>
+        <div class="m"><div class="mv">4.55</div><div class="mk">Profit factor</div></div>
+        <div class="m"><div class="mv">1.74</div><div class="mk">Sharpe</div></div>
+        <div class="m"><div class="mv">1.3%</div><div class="mk">Max drawdown</div></div>
+      </div>
+      <div class="pv-chart">
+        <svg viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true">
+          <defs><lineargradient id="eq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--cyan)" stop-opacity=".28"></stop><stop offset="1" stop-color="var(--cyan)" stop-opacity="0"></stop></lineargradient></defs>
+          <path d="M0,110 C80,100 120,86 180,74 C250,60 300,54 360,40 C430,24 480,20 540,12 L600,8 L600,120 L0,120 Z" fill="url(#eq)"></path>
+          <path d="M0,110 C80,100 120,86 180,74 C250,60 300,54 360,40 C430,24 480,20 540,12 L600,8" fill="none" stroke="var(--cyan)" stroke-width="1.5"></path>
+        </svg>
+      </div>
+      <div class="pv-caption">// Dati illustrativi dell'interfaccia Horaizon</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT -->
+<section class="blk">
+  <div class="wrap">
+    <span class="eyebrow rev in">Cosa è</span>
+    <h2 class="rev measure in">L'analisi stagionale e ciclica, resa uno strumento rigoroso.</h2>
+    <p class="lead-p measure rev in">I mercati si muovono anche per stagionalità e cicli ricorrenti. Horaizon li misura su ogni titolo: individua le finestre temporali statisticamente favorevoli, le valida separando i dati storici (in-sample) da quelli recenti (out-of-sample) per evitare l'illusione dell'overfitting, e ti restituisce metriche complete per capire quanto un pattern è davvero solido. È lo stesso approccio quantitativo che uso nella mia operatività — reso accessibile.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="blk">
+  <div class="wrap">
+    <span class="eyebrow rev in">Dentro Horaizon</span>
+    <h2 class="rev in">Gli strumenti di un desk quant, in un'unica interfaccia.</h2>
+    <div class="feat">
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="22" height="22" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M4 18h6v8M14 12v14M20 8v18" stroke="currentColor" stroke-width="1.5"></path></svg><h3>Finestre stagionali</h3><p>Individua i periodi dell'anno statisticamente favorevoli su ogni singolo titolo, con direzione e durata.</p></div>
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><path d="M4 22l6-7 4 4 6-9 6 7" stroke="currentColor" stroke-width="1.5"></path><path d="M4 26h22" stroke="currentColor" stroke-width="1.5"></path></svg><h3>Validazione IS / OOS</h3><p>Separazione tra dati storici e recenti per distinguere i pattern robusti da quelli sovra-ottimizzati.</p></div>
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="11" stroke="currentColor" stroke-width="1.5"></circle><path d="M15 15V6M15 15l7 4" stroke="currentColor" stroke-width="1.5"></path></svg><h3>Metriche istituzionali</h3><p>Win rate, profit factor, Sharpe, drawdown, rendimento medio: tutto ciò che serve per valutare seriamente.</p></div>
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><path d="M4 24C8 12 12 12 15 18s7 6 11-10" stroke="currentColor" stroke-width="1.5"></path></svg><h3>Curve equity aggregate</h3><p>Visualizza l'andamento composto delle strategie nel tempo, su decenni di storico.</p></div>
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><circle cx="9" cy="10" r="3" stroke="currentColor" stroke-width="1.5"></circle><circle cx="20" cy="14" r="3" stroke="currentColor" stroke-width="1.5"></circle><circle cx="13" cy="21" r="3" stroke="currentColor" stroke-width="1.5"></circle><path d="M11.5 12l6 1.5M18 16l-3.5 3M11 19l-1-6" stroke="currentColor" stroke-width="1.3"></path></svg><h3>Costruzione portafogli</h3><p>Combina più titoli e finestre in un portafoglio, con allocazione del capitale e metriche aggregate.</p></div>
+      <div class="f rev in"><svg viewBox="0 0 30 30" fill="none"><path d="M15 4l11 5-11 5L4 9z" stroke="currentColor" stroke-width="1.5"></path><path d="M8 12v6c0 2 3 3 7 3s7-1 7-3v-6" stroke="currentColor" stroke-width="1.5"></path></svg><h3>Academy</h3><p>Le risorse per imparare a leggere le metriche e usare l'analisi ciclica nel modo corretto.</p></div>
+    </div>
+  </div>
+</section>
+
+<svg class="div-wave wrap" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0,20 C100,4 200,4 300,20 C400,36 500,36 600,20 C700,4 800,4 900,20 C1000,36 1100,36 1200,20" fill="none" stroke="currentColor" stroke-width="1"></path></svg>
+
+<!-- FOR WHOM -->
+<section class="blk">
+  <div class="wrap">
+    <span class="eyebrow rev in">Per chi</span>
+    <h2 class="rev in">Pensato per chi vuole decidere con i dati.</h2>
+    <div class="fit">
+      <div class="p rev in"><div class="n">01</div><h4>Investitori</h4><p>Chi gestisce un portafoglio azionario e vuole affinare il timing di ingresso con basi statistiche.</p></div>
+      <div class="p rev in"><div class="n">02</div><h4>Trader &amp; analisti</h4><p>Chi cerca uno strumento quantitativo per lo stock picking stagionale, oltre l'analisi discrezionale.</p></div>
+      <div class="p rev in"><div class="n">03</div><h4>Appassionati di quant</h4><p>Chi vuole capire come si validano davvero i pattern, senza cadere nell'illusione dell'overfitting.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST FORM -->
+<section class="blk apply" id="waitlist">
+  <div class="wrap">
+    <span class="eyebrow rev in">Lista d'attesa</span>
+    <h2 class="rev in">Sii tra i primi a provarla.</h2>
+    <p class="lead-p apply-intro rev in">Horaizon è in sviluppo. Lascia i tuoi dati per l'accesso anticipato: gli iscritti alla lista saranno i primi a entrare, e mi aiuteranno a plasmare lo strumento con i loro feedback.</p>
+
+    <form id="waitForm" novalidate="" class="rev in">
+      <div class="field">
+        <label>Nome e cognome <span class="req">*</span></label>
+        <input type="text" name="nome" required="" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" name="email" required="" autocomplete="email">
+      </div>
+
+      <div class="field full">
+        <label>Qual è il tuo profilo? <span class="req">*</span></label>
+        <div class="radios">
+          <label><input type="radio" name="profilo" value="Investitore" required=""> Investitore</label>
+          <label><input type="radio" name="profilo" value="Trader attivo"> Trader attivo</label>
+          <label><input type="radio" name="profilo" value="Analista"> Analista</label>
+          <label><input type="radio" name="profilo" value="Appassionato quant"> Appassionato di quant</label>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Su quali mercati sei interessato?</label>
+        <input type="text" name="mercati" placeholder="es. azioni USA, tech, biotech, ETF…">
+      </div>
+
+      <div class="field full">
+        <label>Come operi oggi sui mercati?</label>
+        <textarea name="opera" placeholder="Due righe sul tuo approccio attuale."></textarea>
+      </div>
+      <div class="field full">
+        <label>Cosa ti aspetti da uno strumento come Horaizon?</label>
+        <textarea name="cerca"></textarea>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" name="privacy" required="" id="pv">
+        <label for="pv">Acconsento al trattamento dei dati per essere ricontattato riguardo all'accesso anticipato a Horaizon. <span class="req">*</span></label>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn">Iscrivimi alla lista
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"></path></svg>
+        </button>
+      </div>
+      <p class="form-note">// Nessuno spam. Ti scrivo solo per l'accesso anticipato.</p>
+    </form>
+
+    <div class="form-done" id="formDone">
+      <h3>Sei in lista.</h3>
+      <p>Ti avviso appena Horaizon apre gli accessi anticipati. Nel frattempo, se hai idee o esigenze specifiche, rispondi pure alla mail di conferma.<br><br>— Gianmarco</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <p style="color:var(--bone)">HORAIZON · by Gianmarco Marzotto</p>
+      <div>
+        <a href="https://marzottogianmarco.github.io/ADVISORY1TO1/">Coaching 1:1</a>
+      </div>
+    </div>
+    <p class="foot-legal">© 2026 EVOFIN GROWTH PARTNERS L.L.C.-FZ — Dubai, UAE. Horaizon è uno strumento di analisi a fini informativi e formativi. I risultati passati e le analisi statistiche non costituiscono garanzia di risultati futuri né consulenza finanziaria.</p>
+  </div>
+</footer>
+
+<script>
+  /* ENDPOINT del Google Apps Script per il foglio "Waitlist Horaizon".
+     Vedi la guida "collega-form-a-drive.md" (Parte 2). Lascia "" per solo conferma. */
+  var ENDPOINT = ""; // <-- INCOLLA QUI L'URL DELLA WEB APP HORAIZON
+
+  (function(){
+    var w=1200; function build(cy,amp,periods,phase){var d='M0,'+cy,step=8;for(var x=0;x<=w;x+=step){var y=cy+amp*Math.sin((x/w)*Math.PI*2*periods+phase);d+=' L'+x.toFixed(1)+','+y.toFixed(1);}return d;}
+    var p1=document.getElementById('wavePath'),p2=document.getElementById('wavePath2');
+    if(p1)p1.setAttribute('d',build(300,72,3,0));
+    if(p2)p2.setAttribute('d',build(300,112,2,1.1));
+    var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    [p1,p2].forEach(function(p){if(!p||reduce)return;var len=p.getTotalLength();p.style.strokeDasharray=len;p.style.strokeDashoffset=len;p.style.transition='stroke-dashoffset 2.6s cubic-bezier(.16,1,.3,1)';requestAnimationFrame(function(){requestAnimationFrame(function(){p.style.strokeDashoffset=0;});});});
+  })();
+  (function(){
+    var els=document.querySelectorAll('.rev');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:0.1});
+    els.forEach(function(e){io.observe(e)});
+  })();
+  document.getElementById('waitForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var form=this; if(!form.checkValidity()){form.reportValidity();return;}
+    var fd=new FormData(form);
+    var payload={nome:fd.get('nome')||'',email:fd.get('email')||'',profilo:fd.get('profilo')||'',mercati:fd.get('mercati')||'',opera:fd.get('opera')||'',cerca:fd.get('cerca')||''};
+    function done(){form.style.display='none';var d=document.getElementById('formDone');d.classList.add('show');d.scrollIntoView({behavior:'smooth',block:'center'});}
+    if(ENDPOINT){fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(done).catch(done);}else{done();}
+  });
+</script>
+
+
+</body></html>
